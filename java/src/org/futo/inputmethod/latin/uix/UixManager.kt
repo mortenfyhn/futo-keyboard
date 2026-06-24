@@ -382,6 +382,19 @@ class UixActionKeyboardManager(val uixManager: UixManager, val latinIME: LatinIM
         }
     }
 
+    override fun getTextBeforeCursor(n: Int): CharSequence? {
+        return latinIME.currentInputConnection?.getTextBeforeCursor(n, 0)
+    }
+
+    override fun replaceTextBeforeCursor(deleteLength: Int, text: CharSequence) {
+        val ic = latinIME.currentInputConnection ?: return
+        ic.beginBatchEdit()
+        ic.finishComposingText()                  // finalize any composing word so deletes hit real text
+        ic.deleteSurroundingText(deleteLength, 0)
+        ic.commitText(text, 1)                    // literal commit, no autocorrect
+        ic.endBatchEdit()
+    }
+
     override fun closeActionWindow() {
         uixManager.closeActionWindow()
     }

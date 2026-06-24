@@ -64,6 +64,12 @@ interface KeyboardManagerForAction {
     fun appSupportsImageInsertion(schema: String, ignoreConnectionOverride: Boolean): Boolean
     fun backspace(amount: Int)
 
+    fun getTextBeforeCursor(n: Int): CharSequence?
+
+    /** Deletes [deleteLength] characters before the cursor and commits [text] literally in their
+     *  place (no autocorrect, no phantom space). */
+    fun replaceTextBeforeCursor(deleteLength: Int, text: CharSequence)
+
     fun closeActionWindow()
     fun forceActionWindowAboveKeyboard(to: Boolean)
 
